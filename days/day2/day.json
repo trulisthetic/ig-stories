@@ -1,0 +1,183 @@
+{
+  "people": [
+    {
+      "id": "user1",
+      "username": "arianagrande",
+      "avatar": "ari-avatar.jpg",
+      "stories": [
+        {
+          "type": "image",
+          "src": "d4a1.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+        {
+          "type": "image",
+          "src": "d4a2.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d4a3.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d4a4.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d4a5.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d4a6.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d4a7.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d4a8.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d4a9.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d4a10.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d4a11.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d4a12.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+        {
+          "type": "image",
+          "src": "d4a13.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+        {
+          "type": "image",
+          "src": "d4a14.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        }
+      ]
+    },
+    {
+      "id": "user2",
+      "username": "cynthiaerivo",
+      "avatar": "cyn-avatar.jpg",
+      "stories": [
+        {
+          "type": "image",
+          "src": "d4c1.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "video",
+          "src": "d4c2.mp4",
+          "timestamp": "24h"
+        },
+        {
+          "type": "video",
+          "src": "d4c3.mp4",
+          "timestamp": "24h"
+        },
+        {
+          "type": "image",
+          "src": "d4c4.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "image",
+          "src": "d4c5.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "video",
+          "src": "d4c6.mp4",
+          "timestamp": "24h"
+        },
+        {
+          "type": "image",
+          "src": "d4c7.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "image",
+          "src": "d4c8.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "image",
+          "src": "d4c9.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "image",
+          "src": "d4c10.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "image",
+          "src": "d4c11.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "image",
+          "src": "d4c12.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "image",
+          "src": "d4c13.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "image",
+          "src": "d4c14.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        }
+      ]
+    }
+  ]
+}
