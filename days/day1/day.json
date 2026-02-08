@@ -1,0 +1,258 @@
+{
+  "people": [
+    {
+      "id": "user1",
+      "username": "arianagrande",
+      "avatar": "ari-avatar.jpg",
+      "stories": [
+        {
+          "type": "image",
+          "src": "d2a1.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+        {
+          "type": "video",
+          "src": "d2a2.mp4",
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d2a3.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d2a4.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d2a5.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d2a6.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d2a7.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d2a8.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d2a9.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d2a10.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d2a11.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d3a1.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+         {
+          "type": "image",
+          "src": "d3a2.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+        {
+          "type": "video",
+          "src": "d3a3.mp4",
+          "timestamp": "24h"
+        },
+        {
+          "type": "image",
+          "src": "d3a4.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+        {
+          "type": "image",
+          "src": "d3a5.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+        {
+          "type": "image",
+          "src": "d3a6.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+        {
+          "type": "image",
+          "src": "d3a7.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+        {
+          "type": "image",
+          "src": "d3a8.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+        {
+          "type": "image",
+          "src": "d3a9.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+        {
+          "type": "image",
+          "src": "d3a10.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+        {
+          "type": "image",
+          "src": "d3a11.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+        {
+          "type": "image",
+          "src": "d3a12.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        },
+        {
+          "type": "image",
+          "src": "d3a13.jpg",
+          "durationMs": 5000,
+          "timestamp": "24h"
+        }
+      ]
+    },
+    {
+      "id": "user2",
+      "username": "cynthiaerivo",
+      "avatar": "cyn-avatar.jpg",
+      "stories": [
+        {
+          "type": "image",
+          "src": "d2c1.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "video",
+          "src": "d2c2.mp4",
+          "timestamp": "24h"
+        },
+        {
+          "type": "image",
+          "src": "d2c3.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "image",
+          "src": "d2c4.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "image",
+          "src": "d2c5.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "video",
+          "src": "d2c6.mp4",
+          "timestamp": "24h"
+        },
+        {
+          "type": "image",
+          "src": "d2c7.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "image",
+          "src": "d2c8.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "image",
+          "src": "d2c9.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "image",
+          "src": "d3c1.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "image",
+          "src": "d3c2.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "image",
+          "src": "d3c3.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "video",
+          "src": "d3c4.mp4",
+          "timestamp": "24h"
+        },
+        {
+          "type": "image",
+          "src": "d3c5.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "image",
+          "src": "d3c6.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "image",
+          "src": "d3c7.jpg",
+          "durationMs": 6500,
+          "timestamp": "23h"
+        },
+        {
+          "type": "video",
+          "src": "d3c8.mp4",
+          "timestamp": "24h"
+        }
+      ]
+    }
+  ]
+}
