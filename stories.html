@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stories • Instagram</title>
+  <link rel="icon" type="image/png" href="icons/favicon.png">
+  
+  <style>
+
+    .usernameRow{
+  display:flex;
+  align-items:center;
+  gap:3px;
+}
+
+.verifiedBadge{
+  width:25px;
+  height:25px;
+  object-fit:contain;
+  display:inline-block;
+}
+
+    .iconImg{
+  width:18px;
+  height:18px;
+  object-fit:contain;
+  display:block;
+  filter: brightness(0) invert(1);
+  opacity:.95;
+}
+
+    :root{
+      --bg:#0b0c10;
+      --panel:#101218;
+      --text:#e9e9ee;
+      --muted:#a6a6b3;
+      --stroke:rgba(255,255,255,.12);
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius:18px;
+      --storyW: 420px;
+      --storyH: 746px; /* ~9:16 */
+    }
+.storyMedia[hidden]{ display:none !important; }
+.linkSticker{
+  position:absolute;
+  left:50%;
+  bottom:92px;               /* sits above the reply pill */
+  transform:translateX(-50%);
+  z-index:10;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 16px;
+  border-radius:999px;
+  text-decoration:none;
+  color:#111;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(0,0,0,.12);
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  backdrop-filter: blur(10px);
+  font-weight:650;
+  font-size:14px;
+}
+
+.linkSticker:hover{ filter:brightness(.98); }
+.linkSticker:active{ transform:translateX(-50%) scale(.98); }
+
+
+.linkIcon{
+  width:26px;height:26px;
+  display:grid;
+  place-items:center;
+  border-radius:999px;
+  background:rgba(0,0,0,.06);
+}
+
+.linkText{ white-space:nowrap; }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: radial-gradient(1200px 800px at 50% 20%, rgba(255,255,255,.06), transparent 60%),
+                  linear-gradient(180deg, #06070a, var(--bg));
+      color:var(--text);
+      overflow:hidden;
+    }
+
+    /* Backdrop */
+    .overlay{
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      position:relative;
+    }
+
+    /* Close button (top-right like IG) */
+    .closeBtn{
+      position:absolute;
+      top:18px;
+      right:18px;
+      width:42px;
+      height:42px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(16,18,24,.55);
+      color:var(--text);
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      backdrop-filter: blur(10px);
+    }
+    .closeBtn:hover{background:rgba(16,18,24,.8)}
+
+    /* The whole stage with side previews */
+    .stage{
+      display:grid;
+      grid-template-columns: 160px var(--storyW) 160px;
+      gap:22px;
+      align-items:center;
+      max-width: calc(160px + var(--storyW) + 160px + 44px);
+    }
+
+    /* Side previews */
+    .side{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      opacity:.75;
+      user-select:none;
+    }
+    .previewCard{
+      border-radius:16px;
+      border:1px solid var(--stroke);
+      background: rgba(16,18,24,.55);
+      overflow:hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      cursor:pointer;
+      position:relative;
+    }
+    .previewImg{
+      width:100%;
+      aspect-ratio: 9/16;
+      object-fit:cover;
+      display:block;
+      filter:saturate(.95) contrast(.98);
+      transform:scale(1.01);
+    }
+    .previewMeta{
+      position:absolute;
+      left:10px;
+      top:10px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:rgba(0,0,0,.35);
+      border:1px solid rgba(255,255,255,.12);
+      padding:6px 8px;
+      border-radius:999px;
+      backdrop-filter: blur(10px);
+      font-size:12px;
+    }
+    .avatar{
+      width:22px;height:22px;border-radius:999px;
+      border:2px solid rgba(255,255,255,.35);
+      object-fit:cover;
+    }
+
+    /* Center story "phone" */
+    .viewer{
+      position:relative;
+      width:var(--storyW);
+      height:var(--storyH);
+      border-radius: var(--radius);
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      border:1px solid rgba(255,255,255,.10);
+      background: #000;
+      user-select:none;
+    }
+    .storyMedia{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      transform:translateZ(0);
+    }
+
+    /* Top UI (progress + header) */
+    .topUI{
+      position:absolute;
+      inset:0 0 auto 0;
+      padding:12px 12px 10px;
+      z-index:5;
+      background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,0));
+    }
+
+    .progressRow{
+      display:flex;
+      gap:6px;
+      margin-bottom:10px;
+    }
+    .bar{
+      height:3px;
+      flex:1;
+      background: rgba(255,255,255,.22);
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .bar > i{
+      display:block;
+      height:100%;
+      width:0%;
+      background:#fff;
+      border-radius:999px;
+    }
+
+    .headerRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .leftHeader{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    .nameBlock{
+      display:flex;
+      flex-direction:column;
+      line-height:1.15;
+      min-width:0;
+    }
+    .username{
+      font-size:14px;
+      font-weight:650;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .timestamp{
+      font-size:12px;
+      color:rgba(255,255,255,.7);
+    }
+
+    .controls{
+      display:flex;
+      align-items:center;
+      gap:20px;
+    }
+    .iconBtn{
+  width:auto;
+  height:auto;
+  padding:0;
+  border:none;
+  background:transparent;
+  border-radius:0;
+  box-shadow:none;
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+}
+
+  .iconBtn:hover{ opacity:.85; }
+.iconBtn:active{ transform:scale(.96); }
+
+
+    /* Click zones (left/right like IG) */
+    .tapZone{
+      position:absolute;
+      top:0; bottom:0;
+      width:50%;
+      z-index:4;
+    }
+    .tapZone.left{left:0}
+    .tapZone.right{right:0}
+
+    /* Nav arrows outside the story */
+    .navArrow{
+      width:46px;height:46px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(16,18,24,.6);
+      color:var(--text);
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      backdrop-filter: blur(10px);
+    }
+    .navArrow:hover{background:rgba(16,18,24,.85)}
+    .navWrap{
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      width: calc(var(--storyW) + 160px);
+      display:flex;
+      justify-content:space-between;
+      pointer-events:none;
+      z-index:20;
+    }
+    .navWrap > button{pointer-events:auto}
+
+    /* Bottom reply bar (visual only) */
+    .bottomUI{
+      position:absolute;
+      inset:auto 0 0 0;
+      padding:14px 12px 14px;
+      z-index:5;
+      background: linear-gradient(0deg, rgba(0,0,0,.65), rgba(0,0,0,0));
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .replyPill{
+      flex:1;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.20);
+      padding:12px 14px;
+      color:rgba(255,255,255,.72);
+      background: rgba(0,0,0,.25);
+      font-size:14px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .heart, .share{
+      width:40px;height:40px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.20);
+      display:grid;
+      place-items:center;
+    }
+
+    /* Subtle “paused” badge */
+    .pausedBadge{
+      position:absolute;
+      top:70px;
+      right:14px;
+      z-index:6;
+      padding:6px 10px;
+      border-radius:999px;
+      background: rgba(0,0,0,.35);
+      border:1px solid rgba(255,255,255,.14);
+      font-size:12px;
+      color:rgba(255,255,255,.85);
+      display:none;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Responsive */
+    @media (max-width: 920px){
+      .stage{grid-template-columns: 1fr; max-width: var(--storyW);}
+      .side{display:none}
+      .navWrap{width: calc(var(--storyW) + 20px);}
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <button class="closeBtn" id="closeBtn" aria-label="Close">
+      ✕
+    </button>
+
+    <div class="navWrap">
+      <button class="navArrow" id="prevBtn" aria-label="Previous">‹</button>
+      <button class="navArrow" id="nextBtn" aria-label="Next">›</button>
+    </div>
+
+    <div class="stage">
+      <aside class="side" id="leftSide"></aside>
+
+      <section class="viewer" aria-label="Story viewer">
+        <div class="topUI">
+          <div class="progressRow" id="progressRow"></div>
+
+          <div class="headerRow">
+            <div class="leftHeader">
+              <img class="avatar" id="avatarMain" alt="avatar" />
+              <div class="nameBlock">
+                <div class="usernameRow">
+  <div class="username" id="usernameMain">username</div>
+  <img class="verifiedBadge" id="verifiedBadge" src="icons/verified.png" alt="Verified">
+</div>
+
+                <div class="timestamp" id="timestampMain">•</div>
+              </div>
+            </div>
+
+            <div class="controls">
+
+              <button class="iconBtn" id="muteBtn" aria-label="Sound on" type="button">
+  <img class="iconImg" id="muteIcon" src="icons/mute.png" alt="">
+</button>
+
+
+<button class="iconBtn" id="playBtn" aria-label="Play/pause">
+  <img class="iconImg" id="playIcon" src="icons/pause.png" alt="">
+</button>
+
+<button class="iconBtn" id="moreBtn" aria-label="More">
+  <img class="iconImg" src="icons/more.png" alt="">
+</button>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="pausedBadge" id="pausedBadge">Paused</div>
+
+        <!-- Story media -->
+        <img class="storyMedia" id="storyImg" alt="story" draggable="false" />
+
+<video class="storyMedia" id="storyVideo" playsinline muted preload="metadata"></video>
+
+<a id="storyLink" class="linkSticker" href="#" target="_blank" rel="noopener">
+  <span class="linkIcon">🔗</span>
+  <span class="linkText">Open on Spotify</span>
+</a>
+
+        <!-- Click/tap zones -->
+        <div class="tapZone left" id="tapLeft" aria-hidden="true"></div>
+        <div class="tapZone right" id="tapRight" aria-hidden="true"></div>
+
+        <!-- Bottom UI -->
+        <div class="bottomUI">
+          <div class="replyPill" id="replyPill">Reply to …</div>
+          <div class="heart" title="Like">♡</div>
+          <div class="share" title="Send">➤</div>
+        </div>
+      </section>
+
+      <aside class="side" id="rightSide"></aside>
+    </div>
+  </div>
+
+  <script>
+    // ====== DATA: only TWO people ======
+const params = new URLSearchParams(window.location.search);
+const DAY = params.get("day") || "1";
+const DAY_FOLDER = `days/day${DAY}`;
+
+let PEOPLE = []; // will be filled from day.json
+
+async function loadDayData(){
+  const res = await fetch(`${DAY_FOLDER}/day.json`, { cache: "no-store" });
+  if(!res.ok){
+    throw new Error(`Missing ${DAY_FOLDER}/day.json (HTTP ${res.status})`);
+  }
+  const data = await res.json();
+
+  // Prefix every file path with the correct day folder
+  PEOPLE = data.people.map(person => ({
+    ...person,
+    avatar: `${DAY_FOLDER}/${person.avatar}`,
+    stories: person.stories.map(st => ({
+      ...st,
+      src: `${DAY_FOLDER}/${st.src}`
+    }))
+  }));
+
+  // reset and start
+  personIndex = 0;
+  storyIndex = 0;
+  elapsed = 0;
+  lastTick = performance.now();
+  loadStory(true);
+}
+
+
+
+    // ====== State ======
+    let personIndex = 0;    // 0 or 1
+    let storyIndex = 0;     // within selected person
+    let isPaused = false;
+    let isMuted = false;     // (visual only for images)
+    let rafId = null;
+    let lastTick = 0;
+    let elapsed = 0;        // elapsed time in current story
+
+    // ====== Elements ======
+    const progressRow = document.getElementById("progressRow");
+    const storyImg = document.getElementById("storyImg");
+    const avatarMain = document.getElementById("avatarMain");
+    const usernameMain = document.getElementById("usernameMain");
+    const timestampMain = document.getElementById("timestampMain");
+    const replyPill = document.getElementById("replyPill");
+
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const tapLeft = document.getElementById("tapLeft");
+    const tapRight = document.getElementById("tapRight");
+
+    const playBtn = document.getElementById("playBtn");
+    const muteBtn = document.getElementById("muteBtn");
+    const pausedBadge = document.getElementById("pausedBadge");
+
+    const leftSide = document.getElementById("leftSide");
+    const rightSide = document.getElementById("rightSide");
+
+    const closeBtn = document.getElementById("closeBtn");
+    const moreBtn = document.getElementById("moreBtn");
+
+    const storyVideo = document.getElementById("storyVideo");
+
+    const storyLink = document.getElementById("storyLink");
+    const muteIcon = document.getElementById("muteIcon");
+
+
+
+    // ====== Helpers ======
+    function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+
+    function getCurrentPerson(){ return PEOPLE[personIndex]; }
+    function getCurrentStory(){
+      const p = getCurrentPerson();
+      return p.stories[storyIndex];
+    }
+
+    function buildProgressBars(){
+      progressRow.innerHTML = "";
+      const p = getCurrentPerson();
+      p.stories.forEach((_, i) => {
+        const bar = document.createElement("div");
+        bar.className = "bar";
+        const fill = document.createElement("i");
+        fill.dataset.idx = i;
+        bar.appendChild(fill);
+        progressRow.appendChild(bar);
+      });
+    }
+
+    function setProgress(){
+  const p = getCurrentPerson();
+  const story = getCurrentStory();
+  const fills = progressRow.querySelectorAll(".bar > i");
+
+  // If duration isn't known yet (video metadata not loaded), don't blow up
+  const duration = story.durationMs ?? 1;
+
+  fills.forEach((fill, i) => {
+    if(i < storyIndex) fill.style.width = "100%";
+    else if(i > storyIndex) fill.style.width = "0%";
+    else {
+      const pct = clamp((elapsed / duration) * 100, 0, 100);
+      fill.style.width = pct.toFixed(2) + "%";
+    }
+  });
+}
+
+
+function renderSidePreviews(){
+  const otherIndex = personIndex === 0 ? 1 : 0;
+  const other = PEOPLE[otherIndex];
+
+  leftSide.innerHTML = "";
+  rightSide.innerHTML = "";
+
+  const makeCard = (person, label) => {
+    const card = document.createElement("div");
+    card.className = "previewCard";
+    card.title = label;
+
+    const img = document.createElement("img");
+    img.className = "previewImg";
+    img.src = person.stories[0].src;
+    img.alt = person.username + " preview";
+
+    const meta = document.createElement("div");
+    meta.className = "previewMeta";
+    meta.innerHTML = `
+      <img class="avatar" src="${person.avatar}" alt="">
+      <span>${person.username}</span>
+    `;
+
+    card.appendChild(img);
+    card.appendChild(meta);
+
+    card.addEventListener("click", () => {
+      personIndex = otherIndex;
+      storyIndex = 0;
+      loadStory(true);
+    });
+
+    return card;
+  };
+
+  // ✅ Only show preview on ONE side
+  // rule: if current user is first → show other on right
+  // if current user is second → show other on left
+  if (personIndex === 0) {
+    rightSide.appendChild(makeCard(other, "Switch user"));
+  } else {
+    leftSide.appendChild(makeCard(other, "Switch user"));
+  }
+}
+
+
+    function loadStory(resetClock = true){
+  cancelAnimationFrame(rafId);
+
+  const p = getCurrentPerson();
+  const story = getCurrentStory();
+
+  // UI header
+  avatarMain.src = p.avatar;
+  usernameMain.textContent = p.username;
+  timestampMain.textContent = story.timestamp || "•";
+  replyPill.textContent = `Reply to ${p.username}…`;
+
+  // Link sticker behavior per story
+if(story.link){
+  storyLink.href = story.link;
+  storyLink.style.display = "flex";
+} else {
+  storyLink.href = "#";
+  storyLink.style.display = "none";
+}
+
+  // Progress bars
+  buildProgressBars();
+
+  // Reset timer
+  if(resetClock){
+    elapsed = 0;
+    lastTick = performance.now();
+  }
+
+  // Stop & reset video from any previous story
+  storyVideo.pause();
+  storyVideo.onloadedmetadata = null;
+  storyVideo.onended = null;
+  storyVideo.removeAttribute("src");
+  storyVideo.load();
+
+  if(story.type === "video"){
+    // Show video / hide image
+    storyImg.hidden = true;
+    storyVideo.hidden = false;
+
+    storyVideo.src = story.src;
+    storyVideo.muted = false;
+
+    // When we know duration, set it (only if not provided)
+    storyVideo.onloadedmetadata = () => {
+      if(!story.durationMs || story.durationMs === null){
+        story.durationMs = Math.max(1000, Math.floor(storyVideo.duration * 1000));
+      }
+      // Start playback if not paused
+      if(!isPaused){
+        storyVideo.play().catch(()=>{});
+      }
+      setProgress();
+    };
+
+    // Auto-advance at the end
+    storyVideo.onended = () => goNext();
+
+  } else {
+    // Image story
+    storyVideo.hidden = true;
+    storyImg.hidden = false;
+
+    storyImg.src = story.src;
+    story.durationMs = story.durationMs ?? 5000;
+  }
+
+  setProgress();
+  renderSidePreviews();
+  updatePlayUI();
+
+  rafId = requestAnimationFrame(tick);
+}
+
+
+    function updateButtons(){
+      // At absolute start, prev should still work (wrap behavior like stories)
+      // We'll do wrap: prev from first goes to last story of other person; next from last wraps to first of other.
+      // Buttons always enabled visually.
+    }
+
+    function updatePlayUI(){
+  document.getElementById("playIcon").src = isPaused ? "icons/play.png" : "icons/pause.png";
+  pausedBadge.style.display = isPaused ? "block" : "none";
+
+  // FORCE the mute icon to always be the same file
+  if (muteIcon) muteIcon.src = "icons/mute.png";
+}
+
+
+
+    function tick(now){
+  rafId = requestAnimationFrame(tick);
+
+  const story = getCurrentStory();
+  if(isPaused) return;
+
+  if(story.type === "video"){
+    // Drive progress by real playback time
+    elapsed = (storyVideo.currentTime || 0) * 1000;
+    setProgress();
+    return;
+  }
+
+  // Image timing
+  const dt = now - lastTick;
+  lastTick = now;
+
+  elapsed += dt;
+  if(elapsed >= (story.durationMs ?? 5000)){
+    goNext();
+    return;
+  }
+  setProgress();
+}
+
+
+    function goNext(){
+      const p = getCurrentPerson();
+      if(storyIndex < p.stories.length - 1){
+        storyIndex++;
+        loadStory(true);
+      } else {
+        // move to other person's first story
+        personIndex = personIndex === 0 ? 1 : 0;
+        storyIndex = 0;
+        loadStory(true);
+      }
+    }
+
+    function goPrev(){
+      const p = getCurrentPerson();
+      if(storyIndex > 0){
+        storyIndex--;
+        loadStory(true);
+      } else {
+        // go to other person's last story
+        personIndex = personIndex === 0 ? 1 : 0;
+        const other = getCurrentPerson();
+        storyIndex = other.stories.length - 1;
+        loadStory(true);
+      }
+    }
+
+    // ====== Controls ======
+    nextBtn.addEventListener("click", goNext);
+    prevBtn.addEventListener("click", goPrev);
+    tapRight.addEventListener("click", goNext);
+    tapLeft.addEventListener("click", goPrev);
+
+    playBtn.addEventListener("click", () => {
+  isPaused = !isPaused;
+  lastTick = performance.now();
+
+  const story = getCurrentStory();
+  if(story.type === "video"){
+    if(isPaused) storyVideo.pause();
+    else storyVideo.play().catch(()=>{});
+  }
+
+  updatePlayUI();
+});
+
+
+  muteBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  // do nothing
+});
+
+
+
+
+
+    // Tiny “more” menu vibe (placeholder)
+    moreBtn.addEventListener("click", () => {
+      alert("Mock menu: Report • Copy link • About this account");
+    });
+
+    // Close: for a mock, we just fade out / navigate away
+    closeBtn.addEventListener("click", () => {
+      document.querySelector(".overlay").style.opacity = "0";
+      setTimeout(() => (document.body.innerHTML = ""), 180);
+    });
+
+    // Keyboard controls like the real thing-ish
+    window.addEventListener("keydown", (e) => {
+      if(e.key === "ArrowRight") goNext();
+      if(e.key === "ArrowLeft") goPrev();
+      if(e.key === " "){
+        e.preventDefault();
+        isPaused = !isPaused;
+        lastTick = performance.now();
+        updatePlayUI();
+      }
+      if(e.key.toLowerCase() === "m"){
+        isMuted = !isMuted;
+        updatePlayUI();
+      }
+      if(e.key === "Escape"){
+        closeBtn.click();
+      }
+    });
+
+    // Pause on hover (nice desktop touch)
+    const viewer = document.querySelector(".viewer");
+    viewer.addEventListener("dblclick", () => {
+  const story = getCurrentStory();
+  if(story?.link) window.open(story.link, "_blank", "noopener");
+});
+
+
+    // ====== Init ======
+   loadDayData().catch(err => {
+  console.error(err);
+  alert(err.message);
+});
+
+  </script>
+</body>
+</html>
